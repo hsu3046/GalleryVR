@@ -46,8 +46,8 @@ This app runs on your own computer. You need:
 
 ```bash
 # 1. Clone or download this project
-git clone https://github.com/KnowAI/gallery-vr.git
-cd gallery-vr
+git clone https://github.com/KnowAI/GalleryVR.git
+cd GalleryVR
 
 # 2. Install dependencies (first time only)
 npm install
