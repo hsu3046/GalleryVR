@@ -2,15 +2,15 @@
 
 ## Summary-en
 
-Browse your photos, videos, and files stored on your computer — right from any device on the same Wi-Fi. Open a browser on your phone, tablet, or **Meta Quest 3 VR headset**, and enjoy your personal gallery with smooth swipe navigation, one-tap fullscreen, and a favorites collection. No cloud. No uploads. Everything stays on your machine.
+Browse your photos, videos, and files stored on your computer — right from any device on the same Wi-Fi. Open a browser on your phone, tablet, or **Meta Quest 3 VR headset**, and enjoy your personal gallery with smooth swipe navigation, one-tap fullscreen, favorites, and **Spatial View** — open multiple images as separate windows and arrange them in your VR space. No cloud. No uploads. Everything stays on your machine.
 
 ## Summary-ko
 
-같은 Wi-Fi에 연결된 어떤 기기에서든, 컴퓨터에 저장된 사진·영상·파일을 바로 볼 수 있습니다. 스마트폰, 태블릿, 또는 **Meta Quest 3 VR 헤드셋**의 브라우저를 열면, 스와이프로 넘기고, 탭 한 번으로 전체화면으로 감상하고, 마음에 드는 파일을 즐겨찾기로 모아둘 수 있습니다. 클라우드 없이, 업로드 없이 — 모든 파일은 내 컴퓨터에 그대로 남습니다.
+같은 Wi-Fi에 연결된 어떤 기기에서든, 컴퓨터에 저장된 사진·영상·파일을 바로 볼 수 있습니다. 스마트폰, 태블릿, 또는 **Meta Quest 3 VR 헤드셋**의 브라우저를 열면, 스와이프로 넘기고, 탭 한 번으로 전체화면으로 감상하고, 즐겨찾기로 모아둘 수 있습니다. **Spatial View** 기능으로 여러 이미지를 각각의 창으로 열어 VR 공간에 배치할 수도 있습니다. 클라우드 없이, 업로드 없이 — 모든 파일은 내 컴퓨터에 그대로 남습니다.
 
 ## Summary-ja
 
-同じWi-Fiに接続された端末から、パソコンに保存された写真・動画・ファイルをそのまま閲覧できます。スマートフォン、タブレット、または**Meta Quest 3 VRヘッドセット**のブラウザを開くだけ。スワイプで切り替え、ワンタップでフルスクリーン表示、お気に入り登録もかんたん。クラウド不要、アップロード不要 — すべてのファイルはお使いのPCに保存されたままです。
+同じWi-Fiに接続された端末から、パソコンに保存された写真・動画・ファイルをそのまま閲覧できます。スマートフォン、タブレット、または**Meta Quest 3 VRヘッドセット**のブラウザを開くだけ。スワイプで切り替え、ワンタップでフルスクリーン表示、お気に入り登録もかんたん。**Spatial View**機能で複数の画像を別ウィンドウで開き、VR空間に自由に配置することもできます。クラウド不要、アップロード不要 — すべてのファイルはお使いのPCに保存されたままです。
 
 ---
 
@@ -18,6 +18,7 @@ Browse your photos, videos, and files stored on your computer — right from any
 
 - 🖼️ Image, video, and PDF preview with auto-generated thumbnails
 - ⭐ Favorites with persistent server-side storage (synced across devices)
+- 🪟 **Spatial View** — select multiple images and open them in separate windows for VR spatial layout
 - 🎯 VR-optimized gestures (swipe, long-press, double-tap)
 - 🌙 Dark / Light theme
 - 🔒 Password protection
@@ -46,7 +47,7 @@ This app runs on your own computer. You need:
 
 ```bash
 # 1. Clone or download this project
-git clone https://github.com/KnowAI/GalleryVR.git
+git clone https://github.com/hsu3046/GalleryVR.git
 cd GalleryVR
 
 # 2. Install dependencies (first time only)
@@ -104,6 +105,14 @@ This ignores the saved path and prompts you again.
 | **⭐ Add to favorites** | Swipe ↑ (upward) |
 | **Zoom in** | Long-press (hold ~0.5s) |
 | **Fullscreen** | Double-tap |
+
+### Spatial View (VR multi-window)
+
+1. Tap the **🪟 Spatial View** icon in the header
+2. Select images by tapping (up to 6)
+3. Tap **"Spatial View"** button at the bottom
+4. Each image opens in its own browser window
+5. On Quest 3: move windows to desired positions → tap the **anchor icon** to lock them in place
 
 ### Keyboard Shortcuts
 

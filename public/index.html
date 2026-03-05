@@ -56,22 +56,30 @@
     </div>
     <div class="header-right">
       <div class="file-count" id="file-count"></div>
-      <button class="icon-btn" id="btn-view-toggle" title="뷰 전환" aria-label="뷰 전환">
-        <svg id="icon-grid" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2">
-          <rect x="3" y="3" width="7" height="7" rx="1" />
-          <rect x="14" y="3" width="7" height="7" rx="1" />
-          <rect x="3" y="14" width="7" height="7" rx="1" />
-          <rect x="14" y="14" width="7" height="7" rx="1" />
+      <button class="icon-btn" id="btn-select-mode" title="Spatial View" aria-label="Spatial View">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="10" width="11" height="11" rx="1.5" />
+          <path d="M6 10V7.5A1.5 1.5 0 0 1 7.5 6h9A1.5 1.5 0 0 1 18 7.5v9a1.5 1.5 0 0 1-1.5 1.5H13" />
+          <path d="M10 6V3.5A1.5 1.5 0 0 1 11.5 2H21a1.5 1.5 0 0 1 1.5 1.5V13a1.5 1.5 0 0 1-1.5 1.5h-2.5" />
         </svg>
+      </button>
+      <button class="icon-btn" id="btn-view-toggle" title="뷰 전환" aria-label="뷰 전환">
         <svg id="icon-list" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2" style="display:none">
+          stroke-width="2">
           <line x1="8" y1="6" x2="21" y2="6" />
           <line x1="8" y1="12" x2="21" y2="12" />
           <line x1="8" y1="18" x2="21" y2="18" />
           <line x1="3" y1="6" x2="3.01" y2="6" />
           <line x1="3" y1="12" x2="3.01" y2="12" />
           <line x1="3" y1="18" x2="3.01" y2="18" />
+        </svg>
+        <svg id="icon-grid" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" style="display:none">
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+          <rect x="14" y="14" width="7" height="7" rx="1" />
         </svg>
       </button>
       <button class="icon-btn" id="btn-favorites-filter" title="즐겨찾기 필터" aria-label="즐겨찾기 필터">
@@ -117,6 +125,18 @@
       <p>이 폴더는 비어있습니다</p>
     </div>
   </main>
+
+  <!-- Spatial View Action Bar -->
+  <div class="spatial-bar" id="spatial-bar" style="display:none">
+    <div class="spatial-bar-info">
+      <span id="spatial-bar-count">0개 선택됨</span>
+      <span class="spatial-bar-hint">(최대 6개)</span>
+    </div>
+    <div class="spatial-bar-actions">
+      <button class="spatial-btn secondary" id="btn-select-all" title="이미지 전체 선택">전체 선택</button>
+      <button class="spatial-btn primary" id="btn-spatial-open" disabled>Spatial View</button>
+    </div>
+  </div>
 
   <!-- Lightbox / Full-size Viewer -->
   <div class="lightbox" id="lightbox">

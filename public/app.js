@@ -15,6 +15,8 @@
     let zoomMode = 'fit'; // 'fit' or 'full'
     let favoriteSet = new Set(); // set of favorite file paths
     let showFavoritesOnly = false;
+    let isSelectMode = false;
+    let selectedFiles = new Set(); // set of selected file paths
 
     // ─── DOM Elements ───
     const $ = (sel) => document.querySelector(sel);
@@ -34,6 +36,8 @@
     const lightboxContent = $('#lightbox-content');
     const lightboxInfo = $('#lightbox-info');
     const lightboxCounter = $('#lightbox-counter');
+    const spatialBar = $('#spatial-bar');
+    const spatialBarCount = $('#spatial-bar-count');
 
     // ─── Initialize ───
     init();
@@ -133,6 +137,11 @@
 
         // Favorites filter
         $('#btn-favorites-filter').addEventListener('click', toggleFavoritesFilter);
+
+        // Selection mode
+        $('#btn-select-mode').addEventListener('click', toggleSelectMode);
+        $('#btn-spatial-open').addEventListener('click', openSpatialView);
+        $('#btn-select-all').addEventListener('click', selectAllImages);
 
         // Lightbox controls
         $('#lightbox-backdrop').addEventListener('click', closeLightbox);
@@ -298,6 +307,18 @@
             preview.appendChild(favBadge);
         }
 
+        // Selection checkbox (always in DOM, shown via CSS when select mode active)
+        if (isSelectMode && file.category === 'image') {
+            const checkbox = document.createElement('div');
+            checkbox.className = 'card-checkbox';
+            checkbox.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+            preview.appendChild(checkbox);
+
+            if (selectedFiles.has(file.path)) {
+                card.classList.add('selected');
+            }
+        }
+
         const info = document.createElement('div');
         info.className = 'card-info';
 
@@ -324,6 +345,12 @@
 
     // ─── Card Click ───
     function handleCardClick(file) {
+        // Selection mode: toggle image selection
+        if (isSelectMode && file.category === 'image') {
+            toggleFileSelection(file.path);
+            return;
+        }
+
         if (file.isDirectory) {
             navigateTo(file.path);
         } else if (['image', 'video', 'pdf'].includes(file.category)) {
@@ -979,6 +1006,132 @@
         } else {
             renderGrid(files);
         }
+    }
+
+    // ─── Selection Mode & Spatial View ───
+    const MAX_SPATIAL_WINDOWS = 6;
+
+    function toggleSelectMode() {
+        isSelectMode = !isSelectMode;
+        const btn = $('#btn-select-mode');
+        btn.classList.toggle('select-active', isSelectMode);
+        document.body.classList.toggle('select-mode', isSelectMode);
+
+        if (!isSelectMode) {
+            // Exiting select mode — clear selections
+            selectedFiles.clear();
+            spatialBar.style.display = 'none';
+        } else {
+            spatialBar.style.display = 'flex';
+        }
+
+        updateSelectionUI();
+
+        // Re-render grid to show/hide checkboxes
+        if (showFavoritesOnly) {
+            renderGrid(files.filter(f => f.isFavorite || favoriteSet.has(f.path)));
+        } else {
+            renderGrid(files);
+        }
+    }
+
+    function toggleFileSelection(filePath) {
+        if (selectedFiles.has(filePath)) {
+            selectedFiles.delete(filePath);
+        } else {
+            if (selectedFiles.size >= MAX_SPATIAL_WINDOWS) {
+                // Show brief toast warning
+                showSelectionToast(`최대 ${MAX_SPATIAL_WINDOWS}개까지 선택 가능합니다`);
+                return;
+            }
+            selectedFiles.add(filePath);
+        }
+
+        // Update card visual without full re-render
+        const cards = grid.querySelectorAll('.file-card');
+        cards.forEach(card => {
+            const idx = parseInt(card.getAttribute('data-index'));
+            const displayedFiles = showFavoritesOnly
+                ? files.filter(f => f.isFavorite || favoriteSet.has(f.path))
+                : files;
+            const file = displayedFiles[idx];
+            if (file && file.path === filePath) {
+                card.classList.toggle('selected', selectedFiles.has(filePath));
+            }
+        });
+
+        updateSelectionUI();
+    }
+
+    function updateSelectionUI() {
+        const count = selectedFiles.size;
+        spatialBarCount.textContent = `${count}개 선택됨`;
+        const openBtn = $('#btn-spatial-open');
+        openBtn.disabled = count === 0;
+
+        // Update select all button text
+        const allImages = files.filter(f => f.category === 'image');
+        const selectableCount = Math.min(allImages.length, MAX_SPATIAL_WINDOWS);
+        const allSelected = selectableCount > 0 && selectedFiles.size >= selectableCount;
+        const selectAllBtn = $('#btn-select-all');
+        selectAllBtn.textContent = allSelected ? '전체 해제' : '전체 선택';
+    }
+
+    function selectAllImages() {
+        const allImages = files.filter(f => f.category === 'image');
+        const selectableCount = Math.min(allImages.length, MAX_SPATIAL_WINDOWS);
+        const allSelected = selectableCount > 0 && selectedFiles.size >= selectableCount;
+
+        if (allSelected) {
+            selectedFiles.clear();
+        } else {
+            selectedFiles.clear();
+            allImages.slice(0, MAX_SPATIAL_WINDOWS).forEach(f => selectedFiles.add(f.path));
+        }
+
+        // Re-render to update checkboxes
+        if (showFavoritesOnly) {
+            renderGrid(files.filter(f => f.isFavorite || favoriteSet.has(f.path)));
+        } else {
+            renderGrid(files);
+        }
+        updateSelectionUI();
+    }
+
+    function openSpatialView() {
+        if (selectedFiles.size === 0) return;
+
+        const selected = Array.from(selectedFiles);
+        const baseUrl = window.location.origin;
+
+        // Open first window immediately (user gesture context)
+        const firstUrl = `${baseUrl}/spatial-view.html?path=${encodeURIComponent(selected[0])}&token=${encodeURIComponent(authToken)}`;
+        window.open(firstUrl, '_blank');
+
+        // Open remaining windows with delay
+        selected.slice(1).forEach((filePath, i) => {
+            setTimeout(() => {
+                const url = `${baseUrl}/spatial-view.html?path=${encodeURIComponent(filePath)}&token=${encodeURIComponent(authToken)}`;
+                window.open(url, '_blank');
+            }, (i + 1) * 500);
+        });
+
+        // Show feedback toast
+        showSelectionToast(`${selected.length}개 창을 열었습니다`);
+    }
+
+    function showSelectionToast(message) {
+        // Remove existing toast
+        const existing = document.querySelector('.spatial-toast');
+        if (existing) existing.remove();
+
+        const toast = document.createElement('div');
+        toast.className = 'gesture-toast spatial-toast';
+        toast.textContent = message;
+        toast.style.fontSize = '16px';
+        toast.style.fontWeight = '500';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 1200);
     }
 
     // ─── View Toggle ───

@@ -24,6 +24,13 @@
 
 ## Important Decisions
 
+### Decision: Spatial View — Multi-Window Launcher 방식 채택
+- **Date:** 2026-03-05
+- **Options:** A) CSS Grid 뷰 (한 화면에 여러 이미지), B) A-Frame WebXR 3D 갤러리, C) `window.open()` 멀티 윈도우
+- **Chosen:** C) `window.open()` 멀티 윈도우
+- **Reasoning:** Quest 3의 Spatial Locking과 조합하면 각 이미지를 물리 공간에 독립 배치 가능. 서버 변경 없이 프론트엔드만으로 구현
+- **Trade-offs:** 팝업 차단기에 의해 첫 번째 창만 열릴 수 있음 → 사용자 클릭 컨텍스트에서 호출 필수. Quest 3에서 최대 12창, 앱에서 6개로 제한
+
 ### Decision: 즐겨찾기 저장을 서버 JSON 파일로
 - **Date:** 2026-03-05
 - **Options:** A) 서버 JSON (`GALLERY_ROOT/.gallery/favorites.json`), B) localStorage, C) 하이브리드
@@ -49,7 +56,14 @@
   - 수직 스와이프 → 브라우저 스크롤과 충돌 (라이트박스 모드에서는 `touchmove preventDefault`로 해결)
   - 멀티터치(핀치 줌) → 브라우저 자체 줌으로 가로채, 웹에 전달 안 됨
   - 핸드트래킹 정밀도 낮음 → 타이밍 기반 제스처 구분 피해야 함
+  - Spatial Locking API는 **브라우저 JS에서 접근 불가** — 사용자 수동 앵커만 가능
+  - `window.open()` 동작하지만 팝업 차단기 주의 → 사용자 클릭 이벤트 컨텍스트에서만 호출
 - **Fix:** 모든 제스처를 `PointerEvent` 기반으로 통일하고, 제스처 유형(탭/홀드/스와이프)으로 분리
+
+### Pattern: SVG viewBox 내 stroke 잘림
+- **Occurrences:** 2회 (2026-03-05, Spatial View 아이콘)
+- **Context:** `viewBox="0 0 24 24"`에서 좌표가 `y=0`까지 가면 `stroke-width: 2`의 상단 1px이 잘림
+- **Fix:** 아이콘 좌표를 stroke-width 반값(1px) 이상 여유를 두고 배치. 최소 `y=2` 이상 시작
 
 ## Failed Attempts
 
