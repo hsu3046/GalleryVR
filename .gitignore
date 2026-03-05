@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Gallery metadata (user-specific)
+.gallery/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
