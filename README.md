@@ -74,15 +74,45 @@ Once running, open a browser on your phone/tablet/VR headset and enter the **IP 
 | `PORT` | `3000` | Server port |
 | `MDNS_NAME` | `gallery` | mDNS hostname (accessible as `http://<name>.local:<port>`) |
 
-## Gesture Controls (Lightbox)
+### First Run
 
-| Gesture | Action |
-|---------|--------|
-| ← → Swipe | Previous / Next file |
-| ↓ Swipe | Close lightbox |
-| ↑ Swipe | ⭐ Toggle favorite |
-| Long-press (500ms) | 2x Zoom toggle |
-| Double-tap | Fullscreen toggle |
+On your first launch, the app will ask you to enter or drag-and-drop a folder path. This is saved to `config.json` and reused automatically on future launches.
+
+### Changing the Gallery Folder
+
+```bash
+# Re-select the gallery folder
+node server.js --reset
+```
+
+This ignores the saved path and prompts you again.
+
+## How to Use
+
+### Browsing
+
+- **Tap a folder** to open it
+- **Tap a photo or video** to view it in full screen
+- Use the **⭐ button** in the header to show only your favorites
+
+### Viewing (Lightbox)
+
+| Action | How |
+|--------|-----|
+| **Next / Previous** | Swipe ← or → |
+| **Close** | Swipe ↓ (downward) |
+| **⭐ Add to favorites** | Swipe ↑ (upward) |
+| **Zoom in** | Long-press (hold ~0.5s) |
+| **Fullscreen** | Double-tap |
+
+### Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| `←` `→` | Previous / Next |
+| `Escape` | Close viewer |
+| `F` | Toggle fullscreen |
+| `Space` | Play / Pause video |
 
 ## Tech Stack
 

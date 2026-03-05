@@ -1074,7 +1074,7 @@ body {
 
 /* Star un-favorite animation */
 .star-pop-overlay.unfavorite svg {
-  filter: drop-shadow(0 4px 12px rgba(255, 255, 255, 0.15));
+  filter: drop-shadow(0 4px 12px rgba(250, 204, 21, 0.25));
 }
 
 /* ─── Swipe Hint Toast ─── */
