@@ -6,7 +6,7 @@ Stream your photos and videos from your computer to any device — phone, tablet
 
 ## Tagline-ko
 
-컴퓨터에 쌓인 사진과 영상을, 스마트폰·태블릿·VR 헤드셋으로 클라우드 없이 바로 감상하세요. Wi-Fi만 연결하면 끝 — 어려운 설정도, 업로드도 필요이 순식간에.
+컴퓨터에 쌓인 사진과 영상을, 스마트폰·태블릿·VR 헤드셋으로 클라우드 없이 바로 감상하세요. Wi-Fi만 연결하면 끝 — 어려운 설정도, 업로드도 필요없이 순식간에.
 
 ## Tagline-ja
 
